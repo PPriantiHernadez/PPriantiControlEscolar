@@ -1,0 +1,118 @@
+﻿﻿@model ML.AlumnoMateria
+@{
+    ViewBag.Title = "GetMateriaSinAsignar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Materias Asiganadas</h2>
+    </div>
+</div>
+<div class="container">
+
+    <div class="row">
+        @using (Html.BeginForm("GetMateriaSinAsignar", "AlumnoMateria", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="row">
+                <div class="col">
+                    @Html.LabelFor(model => model.Alumno.IdAlumno, new { @class = "hidden" })
+                    @Html.TextBoxFor(model => model.Alumno.IdAlumno, new { @class = "hidden form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Alumno.Nombre)
+                    
+                        @Html.TextBoxFor(model => model.Alumno.Nombre, new { @class = "form-control", @id = "txtNombre" })
+                        @Html.ValidationMessageFor(model => model.Alumno.Nombre)
+                    
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Alumno.ApellidoPaterno)
+                   
+                        @Html.TextBoxFor(model => model.Alumno.ApellidoPaterno, new { @class = "form-control", @id = "txtNombre" })
+                        @Html.ValidationMessageFor(model => model.Alumno.ApellidoPaterno)
+                   
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Alumno.ApellidoMaterno)
+                  
+                        @Html.TextBoxFor(model => model.Alumno.ApellidoMaterno, new { @class = "form-control", @id = "txtNombre" })
+                        @Html.ValidationMessageFor(model => model.Alumno.ApellidoMaterno)
+                    
+                </div>
+            </div>
+            <br>
+            <br />
+
+            <div class="row" style="padding-top:30px">
+                <div class="col-md-12">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th class="text-center">
+                                Selecciona
+                            </th>
+                            <th class="text-center " scope="col">
+                                Nombre
+                            </th>
+                            <th class="text-left" scope="col">
+                                Costo
+                            </th>
+                        </tr>
+
+
+                        @foreach (ML.AlumnoMateria alumnoMateria in Model.AlumnosMaterias)
+                        {
+                            <tr>
+                                @* <td class="text-center hidden">
+            @alumnoMateria.Materia.IdMateria
+        </td>*@
+
+                                <td class="text-center">
+                                    <input id="checkbox_@alumnoMateria.Materia.IdMateria" type="checkbox" value="@alumnoMateria.Materia.IdMateria" name="AlumnoMaterias" onclick="CalcularTotal(@alumnoMateria.Materia.Costo, @alumnoMateria.Materia.IdMateria)">
+                                </td>
+                                <td class="text-left">
+                                    @alumnoMateria.Materia.Nombre
+                                </td>
+                                <td class="text-left">
+                                    @alumnoMateria.Materia.Costo
+                                </td>
+                            </tr>
+                        }
+                        <tr>
+                            <td class="text-center">Total:</td>
+                            <td></td>
+                            <td id="total" class="text-center">0</td>
+                        </tr>
+                    </table>
+
+                    <div class="form-group col-md-12">
+                        <div class="text-right">
+                            <input class="btn btn-success" type="submit" value="Actualizar" />
+                            <a class="btn btn-danger" href="@Url.Action("GetMateriaAsignada", "AlumnoMateria", new { IdAlumno = Model.Alumno.IdAlumno })"> Regresar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+    <script type="text/javascript">
+
+    function CalcularTotal(Costo, IdMateria) {
+        if ($('#checkbox_' + IdMateria).is(':checked')) {
+            var total = parseInt($('#total').text())
+            total = total + Costo;
+            $('#total').text(total)
+        }
+        else {
+            var total = parseInt($('#total').text())
+            total = total - Costo;
+            $('#total').text(total)
+
+        }
+
+    }
+    </script>
+

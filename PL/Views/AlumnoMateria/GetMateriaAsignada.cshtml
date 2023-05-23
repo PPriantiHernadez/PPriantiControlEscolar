@@ -1,0 +1,105 @@
+﻿﻿@model ML.AlumnoMateria
+@{
+    ViewBag.Title = "GetMateriaAsignada";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h2>Materias Asignadas</h2>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("Delete", "AlumnoMateria", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+
+            <div class="row">
+                <div class="col">
+                    @Html.LabelFor(model => model.Alumno.IdAlumno, new { @class = "hidden" })
+                    @Html.TextBoxFor(model => model.Alumno.IdAlumno, new { @class = "hidden form-control" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Alumno.Nombre)
+                    
+                        @Html.TextBoxFor(model => model.Alumno.Nombre, new { @class = "form-control", @id = "txtNombre" })
+                        @Html.ValidationMessageFor(model => model.Alumno.Nombre)
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Alumno.ApellidoPaterno)
+                   
+                        @Html.TextBoxFor(model => model.Alumno.ApellidoPaterno, new { @class = "form-control", @id = "txtNombre" })
+                        @Html.ValidationMessageFor(model => model.Alumno.ApellidoPaterno)
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelFor(model => model.Alumno.ApellidoMaterno)
+                   
+                        @Html.TextBoxFor(model => model.Alumno.ApellidoMaterno, new { @class = "form-control", @id = "txtNombre" })
+                        @Html.ValidationMessageFor(model => model.Alumno.ApellidoMaterno)                 
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-12">
+                        <a class="btn btn-success glyphicon-plus " href="@Url.Action("GetMateriaSinAsignar", "AlumnoMateria", Model.Alumno)"></a>
+                    </div>
+                </div>
+            </div>
+
+            if (Model.AlumnosMaterias == null)
+            {
+                <table >
+                    <thead>
+                        <tr>
+                            <td class="text-center" style=" font-weight:bold;">El alumno no tiene materias asignadas</td>
+                        </tr>
+                    </thead>
+                </table>
+            }
+            else
+            {
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <td class="text-center" style=" font-weight:bold;">Eliminar</td>
+                            <td class="hidden">IdAlumnoMateria</td>
+                            <td class="hidden">IdMateria</td>
+                            <td class="text-center" style="font-weight:bold;">Nombre</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (ML.AlumnoMateria alumnomateria in Model.AlumnosMaterias)
+                        {
+
+                            <tr>
+                                <td class="text-center">
+                                    <input type="checkbox" value="@alumnomateria.IdAlumnoMateria" name="AlumnoMaterias">
+                                </td>
+                                <td class="hidden">@alumnomateria.IdAlumnoMateria</td>
+                                <td class="hidden">@alumnomateria.Materia.IdMateria</td>
+                                <td class="text-center">@alumnomateria.Materia.Nombre</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            }
+    <div class="col">
+        <input type="submit" value="Eliminar" class="btn btn-danger" />
+        <a class="btn btn-danger" href="@Url.Action("GetAll", "AlumnoMateria", new { IdAlumno = Model.Alumno.IdAlumno })"> Regresar</a>
+    </div>
+        }
+    </div>
+</div>
+
+
